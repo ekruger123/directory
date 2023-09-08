@@ -89,9 +89,36 @@ $(document).ready(function() {
   
         </table>`
         )
+        
         }
         
 
+      }
+    
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      // your error code
+      console.log(jqXHR);
+    }
+  }); 
+
+
+
+  $.ajax({
+    url: "php/getAllDepartments.php",
+    type: 'GET',
+    dataType: 'json',
+
+    success: function(result) {
+
+      console.log(JSON.stringify(result));
+
+      if (result.status.name == "ok") {
+
+        for (const iterator of result.data) {
+
+          $("#addPersonnelDepartment").append(`<option value="${iterator.id}">${iterator.name}</option>`)   
+};
       }
     
     },
@@ -133,7 +160,12 @@ $(document).ready(function() {
 
       </table> `
 
-  )}
+  )
+
+    $("#addDepartmentLocation").append(`<option value="${iterator.id}">${iterator.name}</option>`
+  )   
+};
+
         
 
       }
@@ -262,13 +294,15 @@ $("#searchInp").on("keyup", function (e) {
     $("#addBtn").attr("data-bs-target","#addLocationModal");
   });
 
-  $(document).on('submit','#addDepartment',function(){
+  $('#addDepartmentForm').on('submit', function(e){
+
+    e.preventDefault();
 
       $.ajax({
         url: "php/insertDepartment.php",
         type: 'POST',
-        data: {name: BA,
-        locationID: 3},
+        data: {name: $('#addDepartmentName:input').val(),
+        locationID: $('#addDepartmentLocation:input').val()},
         dataType: 'json',
     
         success: function(result) {
@@ -278,8 +312,15 @@ $("#searchInp").on("keyup", function (e) {
           if (result.status.name == "ok") {
     
             alert("Department Added");
+            $('#addDepartmentModal').hide()
+
+            
     
           }
+          
+        
+
+      
         
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -288,5 +329,77 @@ $("#searchInp").on("keyup", function (e) {
         }
       }); 
 
+      /*let i = 1
+
+      while (i = 1) {
+        $('#addDepartmentModal').hide()
+        break;
+
+      }*/
+
+      
+
     });
+
+    $('#addLocationForm').on('submit', function(e){
+
+      e.preventDefault();
+  
+        $.ajax({
+          url: "php/insertLocation.php",
+          type: 'POST',
+          data: {name: $('#addLocation').val()},
+          dataType: 'json',
+      
+          success: function(result) {
+      
+            console.log(JSON.stringify(result));
+      
+            if (result.status.name == "ok") {
+      
+              alert("Location added");      
+            }
+            
+          
+  
+        
+          
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            // your error code
+            console.log(jqXHR);
+          }
+        });         
+      });
+
+      $('#addPersonnelForm').on('submit', function(e){
+
+        e.preventDefault();
+    
+          $.ajax({
+            url: "php/insertEmployee.php",
+            type: 'POST',
+            data: {firstName: $('#addPersonnelFirstName').val(),
+                  lastName: $('#addPersonnelLastName').val(),
+                  jobTitle: $('#addPersonnelJobTitle').val(),
+                  email: $('#addPersonnelEmailAddress').val(),
+                  departmentID: $('#addPersonnelDepartment').val()
+                },
+            dataType: 'json',
+        
+            success: function(result) {
+        
+              console.log(JSON.stringify(result));
+        
+              if (result.status.name == "ok") {
+        
+                alert("Location added");      
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              // your error code
+              console.log(jqXHR);
+            }
+          });         
+        });
   
