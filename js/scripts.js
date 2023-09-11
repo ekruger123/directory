@@ -92,7 +92,7 @@ $(document).ready(function() {
         
         }
 
-        $(".deleteDepartmentBtn").on("click", function(e) {
+        /*$(".deleteDepartmentBtn").on("click", function(e) {
 
 
           let words = $('#personnel-tab-pane').text();
@@ -140,7 +140,7 @@ $(document).ready(function() {
             
           }
                 
-          });       
+          });   */    
         
       }
     
@@ -266,6 +266,74 @@ $(document).ready(function() {
       }
       
     });
+
+    /*$(".deletePersonnelBtn").click(function () {
+      $.ajax({
+        url: "php/getPersonnelByID.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+          id: $(this).attr("data-id") // Retrieves the data-id attribute from the calling button
+        },
+        success: function (result) {
+          var resultCode = result.status.code;
+    
+          if (resultCode == 200) {
+            $("#areYouSurePersonnelName").text(
+              result.data["personnel"][0].firstName +
+                " " +
+                result.data["personnel"][0].lastName
+            );
+    
+            $("#areYouSurePersonnelModal").modal("show");
+          } else {
+            $("#areYouSurePersonnelModal .modal-title").replaceWith(
+              "Error retrieving data"
+            );
+            $("#areYouSurePersonnelModal").modal("show");
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          $("#deleteEmployeeName .modal-title").replaceWith(
+            "Error retrieving data"
+          );
+        }
+      });
+    });*/
+    
+    $(".deleteDepartmentBtn").click(function () {
+      console.log("aaaaaaaaaaaa");
+    })
+      /*$.ajax({
+        url:
+          "https://coding.itcareerswitch.co.uk/companydirectory/libs/php/checkDepartmentUse.php",
+        // SELECT count(p.id) as departmentCount, d.name as departmentName FROM personnel p LEFT JOIN department d ON ( d.id = p.departmentID) WHERE d.id = ?
+        type: "POST",
+        dataType: "json",
+        data: {
+          id: $(this).attr("data-id") // Retrieves the data-id attribute from the calling button
+        },
+        success: function (result) {
+          if (result.status.code == 200) {
+            if (result.data[0].departmentCount == 0) {
+              $("#areYouSureDeptName").text(result.data[0].departmentName);
+    
+              $("#areYouSureDeleteDepartmentModal").modal("show");
+            } else {
+              $("#cantDeleteDeptName").text(result.data[0].departmentName);
+              $("#pc").text(result.data[0].departmentCount);
+    
+              $("#cantDeleteDepartmentModal").modal("show");
+            }
+          } else {
+            $("#exampleModal .modal-title").replaceWith("Error retrieving data");
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          $("#exampleModal .modal-title").replaceWith("Error retrieving data");
+        }
+      });
+    });*/
     
     $("#editPersonnelModal").on("show.bs.modal", function (e) {
       
