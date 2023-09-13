@@ -420,13 +420,14 @@ $(document).ready(function() {
           dataType: 'json',
       
           success: function(result) {
-      
+            console.log($('#addDepartmentName:input').val())
+            console.log($('#addDepartmentLocation:input').val())      
             console.log(JSON.stringify(result));
       
             if (result.status.name == "ok") {
       
               alert("Department Added");
-              $('#addDepartmentModal').modal("hide");
+              //$('#addDepartmentModal').modal("hide");
       
             }        
           },
@@ -434,18 +435,7 @@ $(document).ready(function() {
             // your error code
             console.log(jqXHR);
           }
-        }); 
-  
-        /*let i = 1
-  
-        while (i = 1) {
-          $('#addDepartmentModal').hide()
-          break;
-  
-        }*/
-  
-        
-  
+        });       
       });
   
       $('#addLocationForm').on('submit', function(e){
@@ -487,15 +477,17 @@ $(document).ready(function() {
             $.ajax({
               url: "php/insertEmployee.php",
               type: 'POST',
-              data: {firstName: $('#addPersonnelFirstName').val(),
-                    lastName: $('#addPersonnelLastName').val(),
-                    jobTitle: $('#addPersonnelJobTitle').val(),
-                    email: $('#addPersonnelEmailAddress').val(),
-                    departmentID: $('#addPersonnelDepartment').val()
+              data: {firstName: $('#addPersonnelFirstName:input').val(),
+                    lastName: $('#addPersonnelLastName:input').val(),
+                    jobTitle: $('#addPersonnelJobTitle:input').val(),
+                    email: $('#addPersonnelEmailAddress:input').val(),
+                    departmentID: $('#addPersonnelDepartment:input').val()
                   },
               dataType: 'json',
-          
+
               success: function(result) {
+
+                console.log("Ellie", $('#addPersonnelFirstName:input').val(), $('#addPersonnelLastName:input').val(), $('#addPersonnelJobTitle:input').val(), $('#addPersonnelEmailAddress:input').val(), $('#addPersonnelDepartment:input').val());
           
                 console.log(JSON.stringify(result));
           

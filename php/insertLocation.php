@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 	// example use from browser
 	// http://localhost/companydirectory/libs/php/insertDepartment.php?name=New%20Department&locationID=<id>
 
@@ -67,5 +67,5 @@
 	mysqli_close($conn);
 
 	echo json_encode($output); 
-
+	ob_end_flush();
 ?>

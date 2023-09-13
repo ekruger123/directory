@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 	// example use from browser
 	// http://localhost/companydirectory/libs/php/getDepartmentByID.php?id=<id>
 
@@ -74,5 +74,5 @@
 	echo json_encode($output); 
 
 	mysqli_close($conn);
-
+	ob_end_flush();
 ?>

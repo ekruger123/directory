@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 	// example use from browser
 	// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
 	// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
@@ -66,5 +66,5 @@
 	mysqli_close($conn);
 
 	echo json_encode($output); 
-
+	ob_end_flush();
 ?>
