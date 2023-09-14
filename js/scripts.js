@@ -81,7 +81,7 @@ $(document).ready(function() {
               <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal" data-id="${iterator.id}">
                 <i class="fa-solid fa-pencil fa-fw"></i>
               </button>
-              <button type="button" class="btn btn-primary btn-sm deleteDepartmentBtn" data-id="${iterator.id}">
+              <button type="button" class="btn btn-primary btn-sm deleteDepartmentBtn" data-bs-toggle="modal" data-bs-target=""  data-id="${iterator.id}">
                 <i class="fa-solid fa-trash fa-fw"></i>
               </button>
             </td>
@@ -92,55 +92,37 @@ $(document).ready(function() {
         
         }
 
-        /*$(".deleteDepartmentBtn").on("click", function(e) {
-
-
-          let words = $('#personnel-tab-pane').text();
-          let nearestDep = $(e.target).closest('td.department');
-          let query = nearestDep.text();
-
-          console.log(words);
-          console.log(nearestDep);
-          console.log(query);
-
-          if(words.indexOf(query) !== -1){
-            alert("You can't delete this department, there are Employees in them")
-
-          } else {
-
-               
-          alert("Are you sure you want to delete?");
-
-              $.ajax({
-              url: "php/deleteDepartmentByID.php",
-              type: 'POST',
-              data: {id: $(e.target).attr("data-id")},
-              dataType: 'json',
-          
-              success: function(result) {
-          
-                console.log(JSON.stringify(result));
-
-                //console.log(e.target.closest('button').getAttribute('data-id'));
-                console.log($(e.target).attr("data-id"));
-
-              
-          
-                if (result.status.name == "ok") {
-          
-                  alert("Department deleted"); 
-                
+        $(".deleteDepartmentBtn").click(function () {
+          console.log("aaaaaaaaaaaa", $(this).attr("data-id"));
+      
+          $.ajax({
+            url: "php/checkDepartment.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+              id: $(this).attr("data-id") // Retrieves the data-id attribute from the calling button
+            },
+            success: function (result) {
+              if (result.status.code == 200) {
+                if (result.data[0].departmentCount === 0) {
+                  $("#areYouSureDeptName").text(result.data[0].departmentName);
+        
+                  $("#areYouSureDeleteDepartmentModal").modal("show");
+                } else {
+                  $("#cantDeleteDeptName").text(result.data[0].departmentName);
+                  $("#pc").text(result.data[0].departmentCount);
+        
+                  $("#cantDeleteDepartmentModal").modal("show");
                 }
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                // your error code
-                console.log(jqXHR);
+              } else {
+                $("#exampleModal .modal-title").replaceWith("Error retrieving data");
               }
-            }); 
-            
-          }
-                
-          });   */    
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              $("#exampleModal .modal-title").replaceWith("Error retrieving data");
+            }
+          });
+        });   
         
       }
     
@@ -301,9 +283,6 @@ $(document).ready(function() {
       });
     });*/
     
-    $(".deleteDepartmentBtn").click(function () {
-      console.log("aaaaaaaaaaaa");
-    })
       /*$.ajax({
         url:
           "https://coding.itcareerswitch.co.uk/companydirectory/libs/php/checkDepartmentUse.php",
