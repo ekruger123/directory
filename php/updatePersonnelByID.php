@@ -35,9 +35,9 @@ ob_start();
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('SELECT count(p.id) as departmentCount, d.name as departmentName, d.id as departmentID FROM personnel p LEFT JOIN department d ON ( d.id = p.departmentID) WHERE d.id = ?');
+	$query = $conn->prepare('UPDATE personnel SET firstName = ?, lastName = ?, jobTitle = ?, email = ?, departmentID = ? WHERE id = ?');
 
-	$query->bind_param("i", $_REQUEST['id']);
+	$query->bind_param("ssssii", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['departmentID'], $_REQUEST['id']);
 
 	$query->execute();
 	
@@ -48,20 +48,11 @@ ob_start();
 		$output['status']['description'] = "query failed";	
 		$output['data'] = [];
 
-		echo json_encode($output); 
-	
 		mysqli_close($conn);
+
+		echo json_encode($output); 
+
 		exit;
-
-	}
-
-	$result = $query->get_result();
-
-   	$data = [];
-
-	while ($row = mysqli_fetch_assoc($result)) {
-
-		array_push($data, $row);
 
 	}
 
@@ -69,10 +60,10 @@ ob_start();
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = $data;
+	$output['data'] = [];
+	
+	mysqli_close($conn);
 
 	echo json_encode($output); 
-
-	mysqli_close($conn);
 	ob_end_flush();
 ?>
