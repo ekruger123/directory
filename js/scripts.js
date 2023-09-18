@@ -19,9 +19,12 @@ $(document).ready(function() {
                   ${iterator.lastName}, ${iterator.firstName}
                 </td>
                 <td class="align-middle text-nowrap d-none d-md-table-cell">
+                  ${iterator.jobTitle}
+                </td>
+                <td class="align-middle text-nowrap d-none d-md-table-cell personnelDepartmentCol">
                   ${iterator.department}
                 </td>
-                <td class="align-middle text-nowrap d-none d-md-table-cell">
+                <td class="align-middle text-nowrap d-none d-md-table-cell personnelLocationCol">
                   ${iterator.location}
                 </td>
                 <td class="align-middle text-nowrap d-none d-md-table-cell">
@@ -72,7 +75,6 @@ $(document).ready(function() {
                     },
                     success: function (result) {
                       if (result.status.code == 200) {
-                        alert("Personnel deleted")
                        
                       } 
                     },
@@ -129,7 +131,7 @@ $(document).ready(function() {
               <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editDepartmentModal" data-id="${iterator.id}">
                 <i class="fa-solid fa-pencil fa-fw"></i>
               </button>
-              <button type="button" class="btn btn-primary btn-sm deleteDepartmentBtn" data-bs-toggle="modal" data-bs-target=""  data-id="${iterator.id}">
+              <button type="button" class="btn btn-primary btn-sm deleteDepartmentBtn"  data-id="${iterator.id}">
                 <i class="fa-solid fa-trash fa-fw"></i>
               </button>
             </td>
@@ -170,7 +172,6 @@ $(document).ready(function() {
                     },
                     success: function (result) {
                       if (result.status.code == 200) {
-                        alert("Department deleted")
                        
                       } 
                     },
@@ -291,7 +292,6 @@ $(".deleteLocationBtn").click(function () {
             },
             success: function (result) {
               if (result.status.code == 200) {
-                alert("Location deleted")
                
               } 
             },
@@ -338,7 +338,7 @@ $(".deleteLocationBtn").click(function () {
     
     $("#refreshBtn").click(function () {
       location.reload(true)
-      if ($("#personnelBtn").hasClass("active")) {
+      /*if ($("#personnelBtn").hasClass("active")) {
         alert("refresh personnel table");
         
         $("#personnelBtn").addClass('active')        
@@ -353,9 +353,16 @@ $(".deleteLocationBtn").click(function () {
           
         }
         
-      }
+      }*/
+      
       
     });
+        
+     /* $("#departments-tab-pane").on(click, function ()  {
+        console.log("HHHHH")
+        $("#filterBtn").attr("diabled"); 
+               
+        })*/
      
     $("#editPersonnelModal").on("show.bs.modal", function (e) {
       
@@ -455,8 +462,7 @@ $(".deleteLocationBtn").click(function () {
                     console.log(JSON.stringify(result));
               
                     if (result.status.name == "ok") {
-              
-                      alert("Department updated");
+      
                       $('#editDepartmentModal').modal("hide");
               
                     }        
@@ -517,7 +523,6 @@ $(".deleteLocationBtn").click(function () {
               
                     if (result.status.name == "ok") {
               
-                      alert("Location updated");
                       $('#editLocationModal').modal("hide");
               
                     }        
@@ -545,14 +550,16 @@ $(".deleteLocationBtn").click(function () {
   
     $('#personnelBtn').on("click", function() {
       $("#addBtn").attr("data-bs-target","#addPersonnelModal");
+      $("#filterBtn").attr("data-bs-toggle","modal");
     });
   
     $('#departmentsBtn').on("click", function() {
       $("#addBtn").attr("data-bs-target","#addDepartmentModal");
+      $("#filterBtn").attr("data-bs-toggle","false");
     });
   
     $('#locationsBtn').on("click", function() {
-      $("#addBtn").attr("data-bs-target","#addLocationModal");
+      $("#filterBtn").attr("data-bs-toggle","false");
     });
   
     $('#addDepartmentForm').on('submit', function(e){
@@ -573,7 +580,6 @@ $(".deleteLocationBtn").click(function () {
       
             if (result.status.name == "ok") {
       
-              alert("Department Added");
               $('#addDepartmentModal').modal("hide");
       
             }        
@@ -601,7 +607,6 @@ $(".deleteLocationBtn").click(function () {
         
               if (result.status.name == "ok") {
         
-                alert("Location added");
                 $('#addLocationModal').modal("hide");      
               }
               
@@ -645,7 +650,6 @@ $(".deleteLocationBtn").click(function () {
           
                 if (result.status.name == "ok") {
           
-                  alert("Employee updated"); 
                   $('#editPersonnelModal').modal("hide");     
                 }
               },
@@ -682,8 +686,7 @@ $(".deleteLocationBtn").click(function () {
                   console.log(JSON.stringify(result));
             
                   if (result.status.name == "ok") {
-            
-                    alert("Employee added"); 
+             
                     $('#addPersonnelModal').modal("hide");     
                   }
                 },
@@ -693,6 +696,88 @@ $(".deleteLocationBtn").click(function () {
                 }
               });         
             });
+      
+
+     $("#filterModal").on("show.bs.modal", function() {
+      $.ajax({
+        url: "php/getLocationsAndDepartments.php",
+        type: 'GET',
+        dataType: 'json',
+    
+        success: function(result) {
+    
+          console.log(JSON.stringify(result));
+    
+          if (result.status.name == "ok") {
+    
+            for (const iterator of result.data.department) {
+    
+              $("#filterDepartment").append(`<option value="${iterator.id}">${iterator.name}</option>`)   
+            };
+
+            for (const iterator of result.data.location) {
+    
+           $("#filterLocation").append(`<option value="${iterator.id}">${iterator.name}</option>`) 
+           
+           }
+        
+           $('#filterDepartment').on('change', function() {
+           if($('#filterDepartment').find(":selected").val() !== 'none') {
+            $('#filterLocation').attr('disabled', true)
+           } else {
+            $('#filterLocation').attr('disabled', false)
+           };
+
+
+           var query = $('#filterDepartment').find(":selected").text();
+           if(query){
+          // loop through all elements to find match
+          $.each($('#personnelTable').find('tr'), function(){
+            var words = $(this).find('.personnelDepartmentCol').text();
+            if(words.indexOf(query) == -1){
+              $(this).hide();
+            } else {
+              $(this).show();
+            }
+          })
+        }
+
+          })
+
+          $('#filterLocation').on('change', function() {
+            if($('#filterLocation').find(":selected").val() !== 'none') {
+             $('#filterDepartment').attr('disabled', true)
+            } else{
+              $('#filterDepartment').attr('disabled', false)
+            };
+
+            var query = $('#filterLocation').find(":selected").text();
+            if(query){
+           // loop through all elements to find match
+           $.each($('#personnelTable').find('tr'), function(){
+             var words = $(this).find('.personnelLocationCol').text();
+             if(words.indexOf(query) == -1){
+               $(this).hide();
+             } else {
+               $(this).show();
+             }
+           })
+         }
+           })
+
+          }
+        
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // your error code
+          console.log(jqXHR);
+        }
+      }); 
+     })
+
+     $('#filterModal').on('hidden.bs.modal', function() {
+      location.reload(true);
+    })
 });
 
 

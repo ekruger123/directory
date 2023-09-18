@@ -33,7 +33,7 @@
                 <button id="refreshBtn" type="button" class="btn btn-primary">
                   <i class="fa-solid fa-refresh fa-fw"></i>
                 </button>
-                <button id="filterBtn" type="button" class="btn btn-primary">
+                <button id="filterBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
                   <i class="fa-solid fa-filter fa-fw"></i>
                 </button>          
                 <button id="addBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPersonnelModal">
@@ -137,7 +137,7 @@
                 </div>
       
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="editPersonnelJobTitle" placeholder="Job title" required>
+                  <input type="text" class="form-control" id="editPersonnelJobTitle" placeholder="Job title">
                   <label for="editPersonnelJobTitle">Job Title</label>
                 </div>          
       
@@ -196,7 +196,7 @@
                 </div>
       
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="addPersonnelJobTitle" placeholder="Job title" required>
+                  <input type="text" class="form-control" id="addPersonnelJobTitle" placeholder="Job title">
                   <label for="addPersonnelJobTitle">Job Title</label>
                 </div>          
       
@@ -547,6 +547,48 @@
         <button type="button" class="btn btn-outline-secondary myBtn" data-bs-dismiss="modal">No</button>
       </div>
       
+    </div>
+    
+  </div>
+  
+</div>
+
+<div id="filterModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="filterModalLabel" aria-hidden="true">
+        
+  <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
+  <!--   that the header and footer are always on display by making the body scroll -->
+  
+  <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+       
+    <div class="modal-content shadow"> 
+      
+      <div class="modal-header bg-primary bg-gradient text-white">
+        <h5 class="modal-title">Filter Entries</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+          <div class="form-floating mb-3">
+            <select class="form-select" id="filterDepartment" placeholder="">
+              <option value="none" selected disabled>Select an Option</option>
+            </select>
+            <label for="filterDepartment">Department</label>
+          </div>  
+
+          <div class="form-floating">
+            <select class="form-select" id="filterLocation" placeholder="">
+              <option value="none" selected disabled>Select an Option</option>
+            </select>
+            <label for="filterLocation">Location</label>
+          </div>  
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary btn-sm myBtn" id="cancelFilter" data-bs-dismiss="modal">CANCEL</button>
+      </div>
+ 
     </div>
     
   </div>
