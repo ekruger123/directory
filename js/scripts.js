@@ -152,11 +152,11 @@ $(document).ready(function() {
             success: function (result) {
               if (result.status.code == 200) {
                 if (result.data[0].departmentCount == 0) {
-                  $("#areYouSureDeptName").text(result.data[0].departmentName);
+                  $("#areYouSureDeptName").text(result.data[1].departmentName);
         
                   $("#areYouSureDeleteDepartmentModal").modal("show");
                 } else {
-                  $("#cantDeleteDeptName").text(result.data[0].departmentName);
+                  $("#cantDeleteDeptName").text(result.data[1].departmentName);
                   $("#pc").text(result.data[0].departmentCount);
         
                   $("#cantDeleteDepartmentModal").modal("show");
@@ -168,7 +168,7 @@ $(document).ready(function() {
                     type: "POST",
                     dataType: "json",
                     data: {
-                      id: result.data[0].departmentID
+                      id: result.data[1].departmentID
                     },
                     success: function (result) {
                       if (result.status.code == 200) {
@@ -272,11 +272,11 @@ $(".deleteLocationBtn").click(function () {
     success: function (result) {
       if (result.status.code == 200) {
         if (result.data[0].locationCount == 0) {
-          $("#areYouSureLocationName").text(result.data[0].locationName);
+          $("#areYouSureLocationName").text(result.data[1].locationName);
 
           $("#areYouSureDeleteLocationModal").modal("show");
         } else {
-          $("#cantDeleteLocationName").text(result.data[0].locationName);
+          $("#cantDeleteLocationName").text(result.data[1].locationName);
           $("#personnelLocationCount").text(result.data[0].locationCount);
 
           $("#cantDeleteLocationModal").modal("show");
@@ -288,7 +288,7 @@ $(".deleteLocationBtn").click(function () {
             type: "POST",
             dataType: "json",
             data: {
-              id: result.data[0].locationID
+              id: result.data[1].locationID
             },
             success: function (result) {
               if (result.status.code == 200) {
@@ -559,6 +559,7 @@ $(".deleteLocationBtn").click(function () {
     });
   
     $('#locationsBtn').on("click", function() {
+      $("#addBtn").attr("data-bs-target","#addLocationModal");
       $("#filterBtn").attr("data-bs-toggle","false");
     });
   

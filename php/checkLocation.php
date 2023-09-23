@@ -35,7 +35,7 @@ ob_start();
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('SELECT count(p.id) as locationCount, l.name as locationName, l.id as locationID FROM personnel p LEFT JOIN department d ON ( d.id = p.departmentID) LEFT JOIN location l ON ( l.id = d.locationID) WHERE l.id = ?');
+	$query = $conn->prepare('SELECT count(`id`) as `locationCount` FROM `department` WHERE `locationID` = ?');
 
 	$query->bind_param("i", $_REQUEST['id']);
 
@@ -58,6 +58,35 @@ ob_start();
 	$result = $query->get_result();
 
    	$data = [];
+
+	while ($row = mysqli_fetch_assoc($result)) {
+
+		array_push($data, $row);
+
+	}
+
+	$query = $conn->prepare('SELECT name as locationName, id as locationID FROM location WHERE id = ?');
+
+	$query->bind_param("i", $_REQUEST['id']);
+
+	$query->execute();
+	
+	if (!$result) {
+
+		$output['status']['code'] = "400";
+		$output['status']['name'] = "executed";
+		$output['status']['description'] = "query failed";	
+		$output['data'] = [];
+
+		mysqli_close($conn);
+
+		echo json_encode($output); 
+
+		exit;
+
+	}
+
+	$result = $query->get_result();
 
 	while ($row = mysqli_fetch_assoc($result)) {
 
