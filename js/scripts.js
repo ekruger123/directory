@@ -775,10 +775,6 @@ $(".deleteLocationBtn").click(function () {
         }
       }); 
      })
-
-     $('#filterModal').on('hidden.bs.modal', function() {
-      location.reload(true);
-    })
 });
 
 
