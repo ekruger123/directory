@@ -331,7 +331,7 @@ $(".deleteLocationBtn").click(function () {
           });
         } else {
           // empty query so show everything
-          $('table').show();
+          $('tr').show();
         }
       });
       
@@ -626,12 +626,6 @@ $(".deleteLocationBtn").click(function () {
         $('#editPersonnelForm').on('submit', function(e){
   
           e.preventDefault();
-
-          console.log('firstName:', $('#editPersonnelFirstName:input').val(),
-          'lastName:', $('#editPersonnelLastName:input').val(),
-          'jobTitle:', $('#editPersonnelJobTitle:input').val(),
-          'email:', $('#editPersonnelEmailAddress:input').val(),
-          'departmentID:', $('#addPersonnelDepartment:input').val(), 'id:', $('#editPersonnelEmployeeID:input').val())
       
             $.ajax({
               url: "php/updatePersonnelByID.php",
@@ -664,12 +658,6 @@ $(".deleteLocationBtn").click(function () {
           $('#addPersonnelForm').on('submit', function(e){
   
             e.preventDefault();
-  
-            console.log('firstName:', $('#addPersonnelFirstName:input').val(),
-            'lastName:', $('#addPersonnelLastName:input').val(),
-            'jobTitle:', $('#addPersonnelJobTitle:input').val(),
-            'email:', $('#addPersonnelEmailAddress:input').val(),
-            'departmentID:', $('#addPersonnelDepartment:input').val())
         
               $.ajax({
                 url: "php/insertPersonnel.php",
